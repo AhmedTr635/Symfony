@@ -1,0 +1,47 @@
+<h1>List of books</h1>
+{% if books|length is same as 0   %}<h3>No books found </h3>
+{% else %}
+	
+<table border="2">
+<tr>
+
+<td><h3>Title</h3></td>
+<td><h3>category</h3></td>
+<td><h3>publication date</h3></td>
+<td><h3>published</h3></td>
+<td><h3>author</h3></td>
+<td><h3>actions</h3></td>
+
+
+</tr>
+
+
+{% for a in books %}
+
+
+   
+<tr>
+<td>{{a.title}}</td>
+<td>{{a.category}}</td>
+<td>{{a.publicationDate|date('F j Y H:i')}}</td>
+<td>{{a.published}}</td>
+<td>{{a.author.username}}</td>
+
+<td><a href="{{path('edit',{'id':a.ref }) }}">
+			edit
+		</a>
+       <a href="{{path('delete',{'id':a.ref }) }}">
+			delete
+		</a><a href="{{path('show',{'id':a.ref }) }}">
+			show
+		</a></td>
+</tr>
+{% endfor %}
+
+
+
+
+</table>
+
+{% endif %}
+<a href="{{ path('addBook') }}">Add book</a>

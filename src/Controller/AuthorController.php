@@ -42,7 +42,7 @@ class AuthorController extends AbstractController
     }
 
 
-    #[Route('/edit/{id}', name: 'edit')]
+    #[Route('/edit/{id}', name: 'editAuthor')]
     public function edit($id, ManagerRegistry $mr, AuthorRepository $repo, Request $req)
     {
         $author = $repo->find($id);
@@ -69,7 +69,7 @@ class AuthorController extends AbstractController
     }
 
 
-    #[Route('/delete/{id}', name: 'delete')]
+    #[Route('/delete/{id}', name: 'deleteAuthor')]
     public function delete($id, ManagerRegistry $mr, AuthorRepository $repo)
     {
         $a = $repo->find($id);
@@ -84,4 +84,50 @@ class AuthorController extends AbstractController
             "authors" => $repo->findAll()
         ]);
     }
+
+    #[Route('/listEmailQueryBuilder')]
+    public function fetchQuereyBuilder(AuthorRepository $a)
+    {
+        $authors=$a->listAuthorByEmail();
+
+        return $this->render('author/queryList.html.twig',
+        [
+            'authors'=>$authors
+        ]);
+
+
+    }
+
+    #[Route('/searchMaxMin')]
+    public function searchMaxMin(AuthorRepository $rep, Request $request)
+    {
+        $authors=$rep->findAll();
+        if($request->isMethod('post')){
+            $Max=$request->get('MaxSearch');
+            $Min=$request->get('MinSearch');
+
+            $authors=$rep->searchBookMaxMin($Max,$Min);
+
+    }
+    return $this->render('author/maxMinNbBooks.html.twig',
+    [
+        'authors'=>$authors
+    ]);
+}
+#[Route('/deleteDQLnbbooks')]
+public function DqlDeleteNb0(AuthorRepository $repa)
+{
+    $repa->DeleteAuthors0();
+    $authors=$repa->findAll();
+    return $this->render('author/queryList.html.twig',
+        [
+            'authors'=>$authors
+        ]);
+    
+}
+
+
+
+
+
 }

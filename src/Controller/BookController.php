@@ -106,6 +106,7 @@ class BookController extends AbstractController
         return $this->redirectToRoute('list');
        
     }
+    //---------------------------------------------------------
     #[Route('/deleteNb0', name: 'delete0')]
     public function delete0( ManagerRegistry $mr, BookRepository $repo,AuthorRepository $repa)
     { 
@@ -137,5 +138,76 @@ class BookController extends AbstractController
 
 
     }
+//------------------------------------------------------------------------
+    #[Route('/searchBookByref',name:'searchBookByref')]
+    public function showBookRef(BookRepository $repo,Request $request)
+    {
 
+        $result=$repo->findAll();
+        if($request->isMethod('post')){
+            $value=$request->get('searchby');
+            $result=$repo->searchBookByRef($value);
+        return $this->renderForm('book/listSearchRef.html.twig', [
+            'books'=>$result,
+            ]);
+        }
+
+   return $this->renderForm('book/listSearchRef.html.twig', [
+    'books'=>$result,
+   ]);
+    }
+
+    //-----------------------------------------------------
+    #[Route('/booksListByAuthorsSorted',name:'booksListByAuthors')]
+    public function booksList(BookRepository $repo)
+    {
+
+        
+        
+            $books=$repo->booksListByAuthors();
+        return $this->renderForm('book/listQueryBuilder.html.twig', [
+            'books'=>$books
+            ]);
+        
+
+   
+    }
+
+    //---------------------------------------
+    #[Route('/booksListInf2023',name:'booksListInf2023')]
+    public function booksListAvant2023(BookRepository $repo)
+    {
+
+        return $this->render('book/listQueryBuilder.html.twig', [
+            'books'=>$repo->listBooksAvant2023()
+            ]);
+        
+
+   
+    }
+//----------------------------------------------------------
+#[Route('/updateSf_Romance')]
+    public function updateSCf_Romance(BookRepository $repo)
+    {
+        $repo->updateSfToRomanceWithQueryBuilder();
+
+        return $this->render('book/listQueryBuilder.html.twig', [
+            'books'=>$repo->findAll()
+            ]);
+        
+
+   
+    }
+
+
+    //---------------------------------------------
+    #[Route('/listRomanceInf2018Sup2014')]
+    public function listRomance(BookRepository $reb)
+    {
+        return $this->render('book/listQueryBuilder.html.twig',[
+
+           'books'=>$reb->RomanceBooks() 
+        ]);
+
+    }
 }

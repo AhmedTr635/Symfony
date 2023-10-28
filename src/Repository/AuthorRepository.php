@@ -21,28 +21,55 @@ class AuthorRepository extends ServiceEntityRepository
         parent::__construct($registry, Author::class);
     }
 
-//    /**
-//     * @return Author[] Returns an array of Author objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Author[] Returns an array of Author objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('a.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Author
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Author
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    public function listAuthorByEmail()
+    {
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.email', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function searchBookMaxMin($Max,$Min)
+    {
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('SELECT a from App\Entity\Author a where   a.nb_books <:max AND :min <  a.nb_books');
+        $query->setParameter('min',$Min);
+        $query->setParameter('max',$Max);
+        return $query->getResult();
+
+
+    }
+    public function DeleteAuthors0()
+    {
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('DELETE   App\Entity\Author a  where   a.nb_books = 0');
+        return $query->getResult();
+
+
+
+    }
 }
