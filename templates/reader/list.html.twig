@@ -1,0 +1,23 @@
+
+<table border="2">
+<tr>
+
+<td>Username</td>
+
+<td>Actions</td>
+</tr>
+{% for readers in readers %}
+
+<tr>
+<td>{{r.username}}</td>
+
+
+<td><a href="{{path('editAuthor',{'id':r.id }) }}">
+			edit
+		</a>
+       <a href="{{path('deleteAuthor',{'id':r.id }) }}">
+			delete
+		</a></td>
+</tr>
+{% endfor %}
+</table>
